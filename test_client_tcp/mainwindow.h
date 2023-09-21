@@ -7,6 +7,7 @@
 
 #include <QTimer>
 
+
 namespace Ui {
 class MainWindow;
 }
@@ -30,12 +31,13 @@ private slots:
 
     void afficher_erreur(QAbstractSocket::SocketError);
 
-    void faire_qqchose();
+    void trame_requete();
 
 private:
     Ui::MainWindow *ui;
     QTcpSocket *tcpSocket;
     QTimer *pTimer;
+    QImage *pCarte;
 };
 
 #endif // MAINWINDOW_H

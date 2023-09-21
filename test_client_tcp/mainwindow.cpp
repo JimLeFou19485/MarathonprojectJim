@@ -19,13 +19,13 @@ MainWindow::MainWindow(QWidget *parent) :
     // Créer un objet QTimer
     pTimer = new QTimer(this);
 
-    // Connecter le signal timeout() du timer à la méthode faire_qqchose()
-    connect(pTimer, SIGNAL(timeout()), this, SLOT(faire_qqchose()));
+    // Connecter le signal timeout() du timer à la méthode trame_requete()
+    connect(pTimer, SIGNAL(timeout()), this, SLOT(trame_requete()));
 
 
 }
 
-}
+
 
 MainWindow::~MainWindow()
 {
@@ -46,8 +46,7 @@ void MainWindow::on_connexionButton_clicked()
     // Connexion au serveur
     tcpSocket->connectToHost(adresse_ip, port_tcp);
 
-    // Lancer le timer avec un intervalle de 1000 ms (1 seconde)
-    pTimer->start(1000);
+
 }
 
 void MainWindow::on_deconnexionButton_clicked()
@@ -62,6 +61,8 @@ void MainWindow::on_deconnexionButton_clicked()
 
 void MainWindow::on_envoiButton_clicked()
 {
+    // Lancer le timer avec un intervalle de 1000 ms (1 seconde)
+    pTimer->start(1000);
     // Préparation de la requête
     QByteArray requete;
     requete = "Bonjour";
@@ -80,7 +81,13 @@ void MainWindow::gerer_donnees()
     // Timer
 
 }
+void MainWindow::trame_requete(){
+    QByteArray requete;
+    requete = "RETR\r\n";
 
+    // Envoi de la requête
+    tcpSocket->write(requete);
+}
 void MainWindow::afficher_erreur(QAbstractSocket::SocketError socketError)
 {
     switch (socketError)
