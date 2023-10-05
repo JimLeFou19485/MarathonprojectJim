@@ -69,8 +69,8 @@
    <widget class="QLabel" name="label_4">
     <property name="geometry">
      <rect>
-      <x>540</x>
-      <y>620</y>
+      <x>530</x>
+      <y>630</y>
       <width>51</width>
       <height>16</height>
      </rect>
@@ -83,7 +83,7 @@
     <property name="geometry">
      <rect>
       <x>600</x>
-      <y>620</y>
+      <y>630</y>
       <width>241</width>
       <height>20</height>
      </rect>
@@ -303,14 +303,105 @@
    <widget class="QPushButton" name="VueSatellite">
     <property name="geometry">
      <rect>
-      <x>640</x>
-      <y>300</y>
+      <x>520</x>
+      <y>600</y>
       <width>80</width>
       <height>24</height>
      </rect>
     </property>
     <property name="text">
      <string>Vue satellite</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="labelFCmax_2">
+    <property name="geometry">
+     <rect>
+      <x>770</x>
+      <y>530</y>
+      <width>113</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>80</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="labelFCmax_3">
+    <property name="geometry">
+     <rect>
+      <x>770</x>
+      <y>500</y>
+      <width>113</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>30</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="labelFCmax_4">
+    <property name="geometry">
+     <rect>
+      <x>770</x>
+      <y>470</y>
+      <width>113</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>184</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_6">
+    <property name="geometry">
+     <rect>
+      <x>660</x>
+      <y>470</y>
+      <width>111</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Taille (cm)</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_7">
+    <property name="geometry">
+     <rect>
+      <x>660</x>
+      <y>500</y>
+      <width>111</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>âge</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_8">
+    <property name="geometry">
+     <rect>
+      <x>660</x>
+      <y>530</y>
+      <width>111</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Poids(kg)</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_9">
+    <property name="geometry">
+     <rect>
+      <x>630</x>
+      <y>390</y>
+      <width>111</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Taille (cm)</string>
     </property>
    </widget>
   </widget>
