@@ -300,7 +300,7 @@
      <string/>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="VueSatellite">
     <property name="geometry">
      <rect>
       <x>640</x>
@@ -336,22 +336,5 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
- <connections>
-  <connection>
-   <sender>pushButton</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>update()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>679</x>
-     <y>349</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>448</x>
-     <y>363</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

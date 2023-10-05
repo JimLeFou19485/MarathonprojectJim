@@ -22,6 +22,11 @@ MainWindow::MainWindow(QWidget *parent) :
     // Connecter le signal timeout() du timer à la méthode trame_requete()
     connect(pTimer, SIGNAL(timeout()), this, SLOT(trame_requete()));
 
+   //Création de la carte
+    pCarte = new QImage();
+    pCarte->load(R"(C:\Users\neonast\OneDrive - OGEC Ensemble Scolaire Niortais\Documents\GitHub\Marathonproject\carte_la_rochelle_plan.png)");
+
+
 
 }
 
@@ -55,8 +60,8 @@ void MainWindow::on_deconnexionButton_clicked()
     tcpSocket->close();
     // delete timer
     delete pTimer;
-    // carte
-   //    delete pCarte;
+    // suppression carte
+    delete pCarte;
 }
 
 void MainWindow::on_envoiButton_clicked()
@@ -75,9 +80,51 @@ void MainWindow::gerer_donnees()
 {
     // Réception des données
     QByteArray reponse = tcpSocket->readAll();
+    QString trame = QString(reponse);
+    QStringList liste = trame.split(",");
+    QString horaire= liste[1];
+    // Extraction de l'heure minute et seconde
+    int heure = horaire.mid(0,2).toInt();
+    int minute = horaire.mid(2,2).toInt();
+    int seconde = horaire.mid(4,2).toInt();
+    int premier_releve = 28957;
+    int timestamp = (heure * 3600) + (minute * 60) + seconde;
+    // Conversion du timestamp en heures, minutes et secondes
+    int heures = timestamp / 3600;
+    int minutes = (timestamp % 3600) / 60;
+    int secondes = timestamp % 60;
+    QString tempsString = QString("%1:%2:%3").arg(heures, 2, 10, QLatin1Char('0')).arg(minutes, 2, 10, QLatin1Char('0')).arg(secondes, 2, 10, QLatin1Char('0'));
+    // Extraction de l'altitude depuis la trame NMEA (élément 9)
+    QString altitudeStr = liste[9];
+    double altitude = altitudeStr.toDouble(); // Convertir en double
+
+    // Extraction de la latitude et de la longitude depuis la trame NMEA
+    QString latitudeStr = liste[2];
+    QString longitudeStr = liste[4];
+
+    // Conversion de la latitude de DDMM.MMMM à degrés décimaux
+    double latitude = latitudeStr.left(2).toDouble() + latitudeStr.mid(2).toDouble() / 60.0;
+
+    // Conversion de la longitude de DDDMM.MMMM à degrés décimaux
+    double longitude = longitudeStr.left(3).toDouble() + longitudeStr.mid(3).toDouble() / 60.0;
+
+    // Vérifier si la latitude est au sud (S) et la longitude à l'ouest (W) et ajuster les signes en conséquence
+    if (liste[3] == "S")
+    {
+        latitude = -latitude;
+    }
+    if (liste[5] == "W")
+    {
+        longitude = -longitude;
+    }
 
     // Affichage
+    ui->labelAltitude->setText(QString::number(altitude, 'f', 2)); // Affiche 2 décimales pour l'altitude
+    ui->label_Carte->setPixmap(QPixmap::fromImage(*pCarte));
+    ui->labelHeure->setText(tempsString);
     ui->lineEdit_reponse->setText(QString(reponse));
+    ui->labelLatitude->setText(latitudeStr);
+    ui->labelLongitude->setText(longitudeStr);
     // Timer
 
 }
@@ -107,4 +154,28 @@ void MainWindow::afficher_erreur(QAbstractSocket::SocketError socketError)
                                      tr("Erreur : %1.")
                                      .arg(tcpSocket->errorString()));
     }
+}
+// Déclaration d'une variable pour suivre l'état actuel (vue satellite ou standard)
+bool vueSatelliteActive = false;
+
+// Slot pour basculer entre la vue satellite et la vue standard
+void MainWindow::on_boutonVueSatellite_clicked()
+{
+    // Inversez l'état actuel
+    vueSatelliteActive = !vueSatelliteActive;
+
+    // Chargez l'image appropriée en fonction de l'état
+    if (vueSatelliteActive)
+    {
+            // Charger l'image satellite
+            pCarte->load(R"(C:\Users\neonast\OneDrive - OGEC Ensemble Scolaire Niortais\Documents\GitHub\Marathonproject\carte_la_rochelle_satellite.png)");
+    }
+    else
+    {
+            // Charger l'image standard
+            pCarte->load(R"(C:\Users\neonast\OneDrive - OGEC Ensemble Scolaire Niortais\Documents\GitHub\Marathonproject\carte_la_rochelle_plan.png)");
+    }
+
+    // Mettez à jour l'affichage de la carte
+    ui->label_Carte->setPixmap(QPixmap::fromImage(*pCarte));
 }
