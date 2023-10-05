@@ -83,12 +83,22 @@ void MainWindow::gerer_donnees()
     QString trame = QString(reponse);
     QStringList liste = trame.split(",");
     QString horaire= liste[1];
+    // Récupérer l'âge depuis l'interface utilisateur
+    int age = ui->Age->text().toInt();
+    int frequenceCardiaqueMaximale = 220 - age;
+    // Récupérer la chaîne de caractères du nombre de satellites
+    QString nombreSatellitesStr = liste[7];
+    int nombreSatellites = nombreSatellitesStr.toInt(); // Convertir la chaîne en entier
+
     // Extraction de l'heure minute et seconde
     int heure = horaire.mid(0,2).toInt();
     int minute = horaire.mid(2,2).toInt();
     int seconde = horaire.mid(4,2).toInt();
     int premier_releve = 28957;
     int timestamp = (heure * 3600) + (minute * 60) + seconde;
+    QString frequenceCardiaqueStr = liste[15]; // Récupérer la valeur de fréquence cardiaque
+    int frequenceCardiaque = frequenceCardiaqueStr.toInt(); // Convertir la chaîne en entier
+
     // Conversion du timestamp en heures, minutes et secondes
     int heures = timestamp / 3600;
     int minutes = (timestamp % 3600) / 60;
@@ -125,6 +135,11 @@ void MainWindow::gerer_donnees()
     ui->lineEdit_reponse->setText(QString(reponse));
     ui->labelLatitude->setText(latitudeStr);
     ui->labelLongitude->setText(longitudeStr);
+    ui->label_FCmax->setText(QString("%1 bpm").arg(frequenceCardiaqueMaximale));
+    ui->label_nbrSatellite->setText(QString(" %1").arg(nombreSatellites));
+    ui->label_FrequenceCardiaque->setText(QString("Fréquence cardiaque : %1 bpm").arg(frequenceCardiaque));
+
+
     // Timer
 
 }
@@ -155,27 +170,4 @@ void MainWindow::afficher_erreur(QAbstractSocket::SocketError socketError)
                                      .arg(tcpSocket->errorString()));
     }
 }
-// Déclaration d'une variable pour suivre l'état actuel (vue satellite ou standard)
-bool vueSatelliteActive = false;
 
-// Slot pour basculer entre la vue satellite et la vue standard
-void MainWindow::on_boutonVueSatellite_clicked()
-{
-    // Inversez l'état actuel
-    vueSatelliteActive = !vueSatelliteActive;
-
-    // Chargez l'image appropriée en fonction de l'état
-    if (vueSatelliteActive)
-    {
-            // Charger l'image satellite
-            pCarte->load(R"(C:\Users\neonast\OneDrive - OGEC Ensemble Scolaire Niortais\Documents\GitHub\Marathonproject\carte_la_rochelle_satellite.png)");
-    }
-    else
-    {
-            // Charger l'image standard
-            pCarte->load(R"(C:\Users\neonast\OneDrive - OGEC Ensemble Scolaire Niortais\Documents\GitHub\Marathonproject\carte_la_rochelle_plan.png)");
-    }
-
-    // Mettez à jour l'affichage de la carte
-    ui->label_Carte->setPixmap(QPixmap::fromImage(*pCarte));
-}

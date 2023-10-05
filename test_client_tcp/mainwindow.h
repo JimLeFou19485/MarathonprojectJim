@@ -19,7 +19,6 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-
 private slots:
     void on_connexionButton_clicked();
 
@@ -33,7 +32,6 @@ private slots:
 
     void trame_requete();
 
-    void on_boutonVueSatellite_clicked();
 
 private:
     Ui::MainWindow *ui;
